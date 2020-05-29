@@ -6,32 +6,34 @@ import os
 import numpy as np
 
 def main():
+    # make sure that the user included a directory when calling the script
+    if len(sys.argv) != 2:
+        print("Usage: python [directory path]")
+        quit()
+    
     # set up the necessary directories/ housekeeping stuff
-
-    #debugging for shane
-    print("argc: ")
-    print(sys.argc)
-    if sys.argc != 2:
-        print("Usage: python")
-
     directory_path = sys.argv[1]
-    usable_dir_path = os.path.join(directory_path + "usable_data") #using os.path.join so the trailing / doesn't matter 
-    unusable_dir_path = os.path.join(directory_path + "unusable_data")
-    os.mkdir(usable_dir_path)
-    os.mkdir(unusable_dir_path)
+    usable_dir_path = os.path.join(directory_path, "usable_data") #using os.path.join so the trailing / doesn't matter 
+    unusable_dir_path = os.path.join(directory_path, "unusable_data")
+    if not os.path.isdir(usable_dir_path):
+        os.mkdir(usable_dir_path)
+    if not os.path.isdir(unusable_dir_path):
+        os.mkdir(unusable_dir_path)
     #make sure the amount of images and videos are above 50%
 
     #iterate over the directory
     for filename in os.listdir(directory_path):
         #TODO: find out what the image format is
         if filename.endswith(".jpg") or filename.endswith(".png"): 
-            image = cv.imread(directory_path + filename, 0)
+            image = cv.imread(os.path.join(directory_path, filename), 0)
             if cv.countNonZero(image) == 0:
                 #this image is all black and not usable, and therefore must be moved
-                os.rename(directory_path + filename, unusable_dir_path + filename)
+                os.rename(os.path.join(directory_path, filename),
+                          os.path.join(unusable_dir_path, filename))
             elif np.mean(image) == 255: #the average can only be 255 if all the pixels are white
                 #this image is all white and not usable, so it must be moved to the unusable directory
-                os.rename(directory_path + filename, unusable_dir_path + filename)
+                os.rename(os.path.join(directory_path, filename),
+                          os.path.join(unusable_dir_path, filename))
             else:
                 continue #we can't say its usable quite yet
             

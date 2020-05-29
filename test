@@ -1,0 +1,10 @@
+#!/bin/bash
+TEST_DIRECTORY=`realpath test_images`
+python filter.py $TEST_DIRECTORY
+echo "test_images/usable_data contents:"
+ls ./test_images/usable_data
+echo "test_images/unusable_data contents:"
+ls ./test_images/unusable_data
+mv ./test_images/usable_data/* ./test_images
+mv ./test_images/unusable_data/* ./test_images
+#TODO implement meaningful pass fail feedback
