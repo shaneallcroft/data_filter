@@ -1,6 +1,6 @@
 #!/bin/bash
 TEST_DIRECTORY=`realpath test_images`
-python filter.py $TEST_DIRECTORY
+python filter.py 0 $TEST_DIRECTORY 2
 echo "test_images/usable_data contents:"
 ls ./test_images/usable_data
 echo "test_images/unusable_data contents:"
